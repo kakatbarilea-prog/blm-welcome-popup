@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BLM Welcome Popup (Demo)</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<title>BLM - Free Level Overview</title>
 
 <style>
   :root{
@@ -19,59 +17,63 @@
 
   body{
     margin:0;
-    background:#fff; /* blank white background */
+    background:#ffffff; /* blank white page */
     font-family: Calibri, Arial, sans-serif;
     color: var(--navy);
   }
 
-  /* Always visible overlay for demo */
+  /* OVERLAY */
   .overlay{
     position:fixed;
     inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
     background: rgba(0,0,0,0.45);
     backdrop-filter: blur(2px);
+    align-items:center;
+    justify-content:center;
+    z-index:999999;
     padding:18px;
+    display:flex;
+
   }
 
+  /* POPUP */
   .popup{
-    width: 760px;
+    width: 1200px;
     max-width: 100%;
     background:#fff;
     border-radius: 16px;
     box-shadow: 0 10px 45px rgba(0,0,0,0.25);
     overflow:hidden;
+    position:relative;
   }
 
-  /* Header */
+  /* HEADER */
   .header{
     background: var(--navy);
     color:#fff;
     padding: 22px 26px;
-    position: relative;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:18px;
   }
 
   .title{
     margin:0;
     font-size: 22px;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing:.2px;
   }
 
   .subtitle{
-    margin: 6px 0 0 0;
+    margin:6px 0 0 0;
     font-size: 14px;
     opacity:.92;
-    line-height: 1.45;
+    line-height:1.45;
+    max-width: 760px;
   }
 
-  /* VISUAL-ONLY X PLACEHOLDER */
   .close-x{
-    position:absolute;
-    top: 18px;
-    right: 18px;
     width: 34px;
     height: 34px;
     border-radius: 50%;
@@ -81,202 +83,367 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size: 18px;
-    opacity:.8;
-    cursor: default;
-    user-select:none;
-    pointer-events:none; /* no behavior */
+    cursor:pointer;
+    font-size:18px;
+    flex-shrink:0;
   }
+  .close-x:hover{ background: rgba(255,255,255,0.16); }
 
-  /* Body */
+  /* BODY */
   .body{
     padding: 22px 26px 18px 26px;
-  }
-
-  .section{
-    margin-bottom: 16px;
-    padding: 16px 16px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
     background:#fff;
   }
 
-  .label{
-    display:flex;
-    align-items:center;
-    gap: 10px;
-    font-size: 14px;
-    font-weight: 800;
-    margin-bottom: 10px;
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
   }
 
-  .label .tag{
+  .card{
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 18px 16px 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+  }
+
+  .badge{
     display:inline-flex;
     align-items:center;
-    gap: 8px;
+    gap:8px;
     padding: 6px 12px;
     border-radius: 999px;
     font-size: 13px;
-    font-weight: 800;
-    border:1px solid transparent;
+    font-weight: 700;
+    margin-bottom: 12px;
   }
 
-  .tag.free{
+  .badge-free{
     background:#fdf5e6;
     color: var(--gold);
-    border-color: rgba(185,128,0,0.30);
+    border:1px solid rgba(185,128,0,0.30);
   }
 
-  .tag.paid{
+  .badge-paid{
     background:#edf2fa;
     color: var(--navy);
-    border-color: rgba(15,45,86,0.18);
+    border:1px solid rgba(15,45,86,0.20);
   }
 
-  ul{
-    margin: 0;
+  .h{
+    margin:0 0 6px 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .p{
+    margin:0 0 10px 0;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .list{
+    margin: 10px 0 0 0;
     padding: 0;
-    list-style:none;
+    list-style: none;
     display:flex;
     flex-direction:column;
-    gap: 9px;
+    gap:10px;
   }
 
-  li{
+  .li{
     display:flex;
     gap: 10px;
     align-items:flex-start;
-    font-size: 14px;
-    line-height: 1.4;
-    color: var(--navy);
+    padding: 10px 10px;
+    border-radius: 12px;
+    background:#f7f8fb;
+    border: 1px solid #edf0f6;
   }
 
-  li i{
+  .li i{
     margin-top: 2px;
+    color: var(--navy);
+    font-size: 15px;
     width: 18px;
     text-align:center;
     flex-shrink:0;
   }
 
-  .muted{
-    color: var(--muted);
+  .li b{
+    display:block;
+    font-size: 14px;
+    margin-bottom: 2px;
+    color: var(--navy);
   }
 
-  /* Credits note (single statement) */
-  .credits-note{
-    margin-top: 12px;
-    background:#fffaf1;
-    border: 1px solid rgba(185,128,0,0.28);
+  .li span{
+    display:block;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* CREDITS HIGHLIGHT (CENTER STRIP) */
+  .credits-strip{
+    margin-top: 18px;
     border-radius: 14px;
-    padding: 14px 14px;
-    font-size: 13.5px;
-    line-height: 1.45;
-    color: var(--navy);
+    padding: 16px 18px;
+    background: #fffaf1;
+    border: 1px solid rgba(185,128,0,0.28);
     display:flex;
-    gap: 12px;
+    gap: 14px;
     align-items:flex-start;
   }
 
-  .credits-note i{
+  .credits-icon{
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(185,128,0,0.13);
     color: var(--gold);
-    margin-top: 2px;
-    font-size: 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 18px;
+    flex-shrink:0;
   }
 
-  /* Footer */
+  .credits-strip b{
+    display:block;
+    font-size: 15px;
+    color: var(--navy);
+    margin-bottom: 2px;
+  }
+
+  .credits-strip p{
+    margin:0;
+    font-size: 13px;
+    color: #6B7280;
+    line-height: 1.45;
+  }
+
+  /* FOOTER */
   .footer{
     padding: 14px 26px 18px 26px;
     border-top: 1px solid var(--border);
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap: 12px;
+    gap: 14px;
     background:#fff;
   }
 
-  .footer-note{
+  .note{
     font-size: 13px;
     color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .actions{
+    display:flex;
+    gap: 10px;
+    align-items:center;
+    flex-wrap:wrap;
   }
 
   .btn{
-    background: var(--navy);
-    color:#fff;
-    border:none;
     border-radius: 10px;
     padding: 10px 14px;
     font-size: 14px;
-    font-weight: 800;
+    font-weight: 700;
+    cursor:pointer;
+    border:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    white-space:nowrap;
+  }
+
+  .btn-primary{
+    background: var(--navy);
+    color:#fff;
+  }
+  .btn-primary:hover{ background: var(--navyHover); }
+
+  .btn-secondary{
+    background:#fff;
+    color: var(--navy);
+    border: 1px solid #cfd6e2;
+    font-weight:700;
+  }
+  .btn-secondary:hover{ background:#f3f6fb; }
+
+  /* Tiny “not pushy” link */
+  .soft-link{
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    text-decoration:none;
+    opacity: .9;
     cursor:pointer;
   }
-  .btn:hover{ background: var(--navyHover); }
+  .soft-link:hover{ text-decoration: underline; opacity:1; }
 
-  @media(max-width: 720px){
-    .section{ padding: 14px; }
+  @media (max-width: 900px){
+    .grid{ grid-template-columns: 1fr; }
   }
 </style>
 </head>
 
 <body>
 
-<div class="overlay">
-  <div class="popup">
+<div class="overlay" id="welcomeOverlay">
+  <div class="popup" role="dialog" aria-modal="true">
 
     <div class="header">
-      <div class="close-x">×</div>
-
-      <h2 class="title">Welcome to your BLM Legal Portal</h2>
-      <p class="subtitle">
-        Here’s what you can do during your Free Trial — and what paid subscriptions unlock.
-      </p>
+      <div>
+        <h2 class="title">Welcome to the BLM Portal</h2>
+        <p class="subtitle">
+          Here’s what you can do during your Free Trial — and what paid subscriptions unlock.
+        </p>
+      </div>
+      <div class="close-x" aria-label="Close">×</div>
     </div>
 
     <div class="body">
 
-      <!-- Free Trial list -->
-      <div class="section">
-        <div class="label">
-          <span class="tag free"><i class="fa-solid fa-gift"></i> Free Trial includes</span>
+      <div class="grid">
+
+        <!-- FREE -->
+        <div class="card">
+          <div class="badge badge-free">Included on the Free Level</div>
+          <h3 class="h">You can get fully set up</h3>
+          <p class="p">
+            Your Free Level access is designed to help you organize your legal foundation and prepare for meaningful support.
+          </p>
+
+          <ul class="list">
+            <li class="li">
+              <i class="fa-solid fa-id-card"></i>
+              <div>
+                <b>Build your profile</b>
+                <span>Store company details and ownership information.</span>
+              </div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-clipboard-check"></i>
+              <div>
+                <b>Complete the Legal Survey</b>
+                <span>Identify gaps and priorities for your consultant to review.</span>
+              </div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-folder-open"></i>
+              <div>
+                <b>Upload legal documents</b>
+                <span>Keep contracts, policies, and formation docs organized in one place.</span>
+              </div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-handshake"></i>
+              <div>
+                <b>1 Meeting Credit included</b>
+                <span>Use your credit to meet your Principal Consultant.</span>
+              </div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-gavel"></i>
+              <div>
+                <b>Request new matters</b>
+                <span>You can submit a new matter request, but attorney review and work require legal credits</span>
+              </div>
+            </li>
+          </ul>
         </div>
 
-        <ul>
-          <li><i class="fa-solid fa-id-card" style="color:var(--navy)"></i> Build your business profile</li>
-          <li><i class="fa-solid fa-clipboard-check" style="color:var(--navy)"></i> Complete the legal survey</li>
-          <li><i class="fa-solid fa-folder-open" style="color:var(--navy)"></i> Upload legal documents</li>
-          <li><i class="fa-solid fa-handshake" style="color:var(--navy)"></i> 1 meeting credit with your Principal Consultant</li>
-          <li><i class="fa-solid fa-gavel" style="color:var(--navy)"></i> Request new matters <span class="muted">(attorney work require legal credits)</span></li>
-        </ul>
-      </div>
+        <!-- PAID -->
+        <div class="card">
+          <div class="badge badge-paid">What Paid Subscriptions Add</div>
+          <h3 class="h">Ongoing support through credits</h3>
+          <p class="p">
+            Paid subscriptions are built for businesses that want legal work completed proactively and continuously.
+          </p>
 
-      <!-- Paid subscription list -->
-      <div class="section">
-        <div class="label">
-          <span class="tag paid"><i class="fa-solid fa-lock"></i> Paid subscriptions unlock</span>
+          <ul class="list">
+            <li class="li">
+              <i class="fa-solid fa-ticket"></i>
+              <div>
+                <b>Billable hour credits</b>
+                <span>Credits allow attorneys to complete work within your subscription.</span>
+              </div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-percent"></i>
+              <div>
+                <b>Discounted legal services</b>
+                <span>Lower effective rates compared to standard hourly billing.</span>
+              </div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-clock"></i>
+              <div>
+                <b>15-minute check-ins (complimentary)</b>
+                <span>Short check-ins can be booked without using credits.</span>
+              </div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-calendar-days"></i>
+              <div>
+                <b>Additional meetings as needed</b>
+                <span>Longer meetings and follow-ups are scheduled using credits.</span>
+              </div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-briefcase"></i>
+              <div>
+                <b>New matters require credits</b>
+                <span>When work begins, credits are applied based on logged attorney time.</span>
+              </div>
+            </li>
+          </ul>
         </div>
 
-        <ul>
-          <li><i class="fa-solid fa-lock" style="color:var(--gold)"></i> Billable hour credits for attorney work</li>
-          <li><i class="fa-solid fa-lock" style="color:var(--gold)"></i> Discounted legal service rates</li>
-          <li><i class="fa-solid fa-lock" style="color:var(--gold)"></i> Complimentary 15-minute check-ins</li>
-          <li><i class="fa-solid fa-lock" style="color:var(--gold)"></i> Additional meeting time using credits</li>
-        </ul>
       </div>
 
-      <!-- Credits note -->
-      <div class="credits-note">
-        <i class="fa-solid fa-coins"></i>
+      <!-- CREDITS STRIP (MOST IMPORTANT PART) -->
+      <div class="credits-strip">
+        <div class="credits-icon"><i class="fa-solid fa-coins"></i></div>
         <div>
-          <b>Important:</b> Billable legal work requires credits.
-          <span class="muted">Credits are only used when attorney time is logged.</span>
+          <b>Important:</b> Billable legal work requires credits. <span style="color:#6B7280;">Credits are only used when attorney time is logged.</span>
         </div>
       </div>
 
     </div>
 
+    <div class="footer">
+      <div class="note"></div>
 
+      <div class="actions">
+        <a class="soft-link" href="#">Learn about plans</a>
+        <button class="btn btn-primary">
+          Continue to Dashboard
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
 
   </div>
 </div>
+
+<!-- FONT AWESOME ICONS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 </body>
 </html>
