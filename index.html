@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BLM - Free Level Overview</title>
+<title>BLM - Client Portal Access Overview</title>
 
 <style>
   :root{
@@ -33,18 +33,22 @@
     z-index:999999;
     padding:18px;
     display:flex;
-
   }
 
   /* POPUP */
   .popup{
-    width: 1200px;
+    width: 1400px; /* CONTROL POPUP WIDTH HERE */
     max-width: 100%;
     background:#fff;
     border-radius: 16px;
     box-shadow: 0 10px 45px rgba(0,0,0,0.25);
     overflow:hidden;
     position:relative;
+
+    /* NEW: keep popup from becoming lengthy */
+    max-height: calc(100vh - 36px);
+    display:flex;
+    flex-direction:column;
   }
 
   /* HEADER */
@@ -56,6 +60,7 @@
     justify-content:space-between;
     align-items:flex-start;
     gap:18px;
+    flex-shrink:0; /* NEW */
   }
 
   .title{
@@ -70,7 +75,7 @@
     font-size: 14px;
     opacity:.92;
     line-height:1.45;
-    max-width: 760px;
+    max-width: 820px;
   }
 
   .close-x{
@@ -93,6 +98,11 @@
   .body{
     padding: 22px 26px 18px 26px;
     background:#fff;
+
+    /* NEW: scroll inside popup */
+    overflow:auto;
+    flex:1 1 auto;
+    min-height:0;
   }
 
   .grid{
@@ -120,15 +130,15 @@
   }
 
   .badge-free{
-    background:#fdf5e6;
-    color: var(--gold);
-    border:1px solid rgba(185,128,0,0.30);
+    background:#f7f8fb;
+    color: var(--navy);
+    border:1px solid rgba(15,45,86,0.18);
   }
 
   .badge-paid{
-    background:#edf2fa;
-    color: var(--navy);
-    border:1px solid rgba(15,45,86,0.20);
+    background:#fffaf1;
+    color: var(--gold);
+    border:1px solid rgba(185,128,0,0.28);
   }
 
   .h{
@@ -151,23 +161,23 @@
     list-style: none;
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:6px;
   }
 
   .li{
     display:flex;
     gap: 10px;
     align-items:flex-start;
-    padding: 10px 10px;
-    border-radius: 12px;
-    background:#f7f8fb;
-    border: 1px solid #edf0f6;
+    padding: 8px 8px;
+    border-radius: 10px;
+    background: transparent;
+    border: none;
   }
 
   .li i{
     margin-top: 2px;
     color: var(--navy);
-    font-size: 15px;
+    font-size: 14px;
     width: 18px;
     text-align:center;
     flex-shrink:0;
@@ -187,7 +197,22 @@
     line-height: 1.4;
   }
 
-  /* CREDITS HIGHLIGHT (CENTER STRIP) */
+  /* NEW: force true one-line feature format inside list items */
+  .li .inline-desc{
+    display:block;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .li .inline-desc b{
+    display:inline;
+    margin:0;
+    color: var(--navy);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  /* CREDITS HIGHLIGHT */
   .credits-strip{
     margin-top: 18px;
     border-radius: 14px;
@@ -214,14 +239,14 @@
 
   .credits-strip b{
     display:block;
-    font-size: 15px;
+    font-size: 12px;
     color: var(--navy);
     margin-bottom: 2px;
   }
 
   .credits-strip p{
     margin:0;
-    font-size: 13px;
+    font-size: 12px;
     color: #6B7280;
     line-height: 1.45;
   }
@@ -235,6 +260,7 @@
     align-items:center;
     gap: 14px;
     background:#fff;
+    flex-shrink:0; /* NEW */
   }
 
   .note{
@@ -291,6 +317,13 @@
   @media (max-width: 900px){
     .grid{ grid-template-columns: 1fr; }
   }
+
+  /* NEW: slightly tighter padding on phones */
+  @media (max-width: 520px){
+    .header{ padding: 18px 18px; }
+    .body{ padding: 16px 18px 14px 18px; }
+    .footer{ padding: 12px 18px 14px 18px; }
+  }
 </style>
 </head>
 
@@ -303,7 +336,7 @@
       <div>
         <h2 class="title">Welcome to the BLM Portal</h2>
         <p class="subtitle">
-          Here’s what you can do during your Free Trial — and what paid subscriptions unlock.
+         Here’s what you can do during your Free Trial — and what paid subscriptions unlock.
         </p>
       </div>
       <div class="close-x" aria-label="Close">×</div>
@@ -313,122 +346,98 @@
 
       <div class="grid">
 
-        <!-- FREE -->
+        <!-- CLIENT PORTAL ACCESS (ALL USERS) -->
         <div class="card">
           <div class="badge badge-free">Included on the Free Level</div>
-          <h3 class="h">You can get fully set up</h3>
-          <p class="p">
-            Your Free Level access is designed to help you organize your legal foundation and prepare for meaningful support.
-          </p>
+          <h3 class="h">Free Portal Access</h3>
 
           <ul class="list">
             <li class="li">
-              <i class="fa-solid fa-id-card"></i>
-              <div>
-                <b>Build your profile</b>
-                <span>Store company details and ownership information.</span>
-              </div>
+              <i class="fa-solid fa-check"></i>
+              <div class="inline-desc"><b>Company Profile</b>: Keep core business details on file so your legal team can move faster.</div>
             </li>
 
             <li class="li">
-              <i class="fa-solid fa-clipboard-check"></i>
-              <div>
-                <b>Complete the Legal Survey</b>
-                <span>Identify gaps and priorities for your consultant to review.</span>
-              </div>
+              <i class="fa-solid fa-check"></i>
+              <div class="inline-desc"><b>User Profile</b>: Maintain the right contacts so communication and approvals never bottleneck.</div>
             </li>
 
             <li class="li">
-              <i class="fa-solid fa-folder-open"></i>
-              <div>
-                <b>Upload legal documents</b>
-                <span>Keep contracts, policies, and formation docs organized in one place.</span>
-              </div>
+              <i class="fa-solid fa-check"></i>
+              <div class="inline-desc"><b>Matter Management</b>: Track what’s open, pending, and completed so nothing gets missed.</div>
             </li>
 
             <li class="li">
-              <i class="fa-solid fa-handshake"></i>
-              <div>
-                <b>1 Meeting Credit included</b>
-                <span>Use your credit to meet your Principal Consultant.</span>
-              </div>
+              <i class="fa-solid fa-check"></i>
+              <div class="inline-desc"><b>Matter Request</b>: Submit requests with context upfront to reduce delays and back-and-forth.</div>
             </li>
 
             <li class="li">
-              <i class="fa-solid fa-gavel"></i>
-              <div>
-                <b>Request new matters</b>
-                <span>You can submit a new matter request, but attorney review and work require legal credits</span>
-              </div>
+              <i class="fa-solid fa-check"></i>
+              <div class="inline-desc"><b>Document Library</b>: Keep key legal documents organized and accessible to the right people.</div>
             </li>
+
           </ul>
-        </div>
-
-        <!-- PAID -->
-        <div class="card">
-          <div class="badge badge-paid">What Paid Subscriptions Add</div>
-          <h3 class="h">Ongoing support through credits</h3>
-          <p class="p">
-            Paid subscriptions are built for businesses that want legal work completed proactively and continuously.
-          </p>
-
-          <ul class="list">
-            <li class="li">
-              <i class="fa-solid fa-ticket"></i>
-              <div>
-                <b>Billable hour credits</b>
-                <span>Credits allow attorneys to complete work within your subscription.</span>
-              </div>
-            </li>
-
-            <li class="li">
-              <i class="fa-solid fa-percent"></i>
-              <div>
-                <b>Discounted legal services</b>
-                <span>Lower effective rates compared to standard hourly billing.</span>
-              </div>
-            </li>
-
-            <li class="li">
-              <i class="fa-solid fa-clock"></i>
-              <div>
-                <b>15-minute check-ins (complimentary)</b>
-                <span>Short check-ins can be booked without using credits.</span>
-              </div>
-            </li>
-
-            <li class="li">
-              <i class="fa-solid fa-calendar-days"></i>
-              <div>
-                <b>Additional meetings as needed</b>
-                <span>Longer meetings and follow-ups are scheduled using credits.</span>
-              </div>
-            </li>
-
-            <li class="li">
-              <i class="fa-solid fa-briefcase"></i>
-              <div>
-                <b>New matters require credits</b>
-                <span>When work begins, credits are applied based on logged attorney time.</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
       <!-- CREDITS STRIP (MOST IMPORTANT PART) -->
       <div class="credits-strip">
         <div class="credits-icon"><i class="fa-solid fa-coins"></i></div>
         <div>
-          <b>Important:</b> Billable legal work requires credits. <span style="color:#6B7280;">Credits are only used when attorney time is logged.</span>
+         <p> <b>Billable legal work requires credits.
+            </b>
+            Credits are only used when attorney time is logged.</p>
+
         </div>
       </div>
+      
+        </div>
+
+        <!-- PAID (CREDITS + RULES) -->
+        <div class="card">
+          <div class="badge badge-paid">What Paid Subscriptions Add</div>
+          <h3 class="h">Subscription + Credits</h3>
+
+          <ul class="list">
+            <li class="li">
+              <i class="fa-solid fa-lock"></i>
+              <div class="inline-desc"><b>Multiple Users</b>: Add team members so decisions and approvals don’t rely on one person.</div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-lock"></i>
+              <div class="inline-desc"><b>Legal Activity &amp; Time Logs</b>: Full visibility into what was done and how time was applied—built-in accountability.</div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-lock"></i>
+              <div class="inline-desc"><b>Credits for Legal Work</b>: Unlock drafting, review, filings, and execution—credits apply only when work is logged.</div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-lock"></i>
+              <div class="inline-desc"><b>1 Included Check-In per Month</b>: Stay aligned monthly to catch issues early and keep priorities moving.</div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-lock"></i>
+              <div class="inline-desc"><b>Additional Meetings as Needed</b>: Book deeper strategy or document sessions using credits.</div>
+            </li>
+
+            <li class="li">
+              <i class="fa-solid fa-lock"></i>
+              <div class="inline-desc"><b>Credit Balance &amp; Tracking</b>: Predictable legal spending—know what you used and what it produced.</div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+
 
     </div>
 
     <div class="footer">
-      <div class="note"></div>
+      <div class="note">
+      </div>
 
       <div class="actions">
         <a class="soft-link" href="#">Learn about plans</a>
